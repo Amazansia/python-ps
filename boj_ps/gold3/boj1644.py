@@ -1,3 +1,4 @@
+import math
 import sys
 
 """
@@ -13,3 +14,36 @@ N은 400만까지 들어옴
 input = sys.stdin.readline
 
 N = int(input())
+
+arr = [True for _ in range(N + 1)]
+arr[0] = False
+arr[1] = False
+
+for i in range(2, int(math.sqrt(N + 1) + 1)):
+    if arr[i]:
+        for j in range(i + i, N + 1, i):
+            arr[j] = False
+
+primenums = [i for i in range(1, N + 1) if arr[i]]
+
+left = 0
+right = 0
+
+answer = 0
+s = 2
+# print(*primenums)
+while left <= right < len(primenums):
+    if s == N:
+        s -= primenums[left]
+        left += 1
+        answer += 1
+    elif s > N:
+        s -= primenums[left]
+        left += 1
+    else:
+        right += 1
+        if right >= len(primenums):
+            break
+        s += primenums[right]
+
+print(answer)
