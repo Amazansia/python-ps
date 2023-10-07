@@ -8,109 +8,98 @@ import sys
 결정됐으면 가장 왼쪽의 바둑알 번호출력
 가로 세로 주대각선 부대각선 각각 찾아야할듯
 찾아서 서로소집합 번호 붙여주면? 아니 굳이...
+앞뒤만 봐주면 될듯
 검은돌 번호는 홀수 / 흰돌 번호는 짝수
 
 """
 input = sys.stdin.readline
 
 arr = [list(map(int, input().split())) for _ in range(19)]
-visited = [[False for _ in range(19)] for _ in range(19)]
-
+# j, i, x
 answer = [100, 100, 0]
-isOver6 = False
+
+
+def min(x, y):
+    if x[0] > y[0]:
+        return y
+    if x[0] == y[0] and x[1] > y[1]:
+        return y
+    return x
 
 
 def horizontalSearch(x):
     global answer
     for i in range(19):
         for j in range(19):
-            for k in range(6):
-                temp = answer
-                if not (j + k < 19 and arr[i][j + k] == x and not visited[i][j + k]):
+            # 앞 체크
+            if j > 0 and arr[i][j - 1] == x:
+                continue
+            for k in range(5):
+                if j + k >= 19 or arr[i][j + k] != x:
                     break
                 if k == 4:
-                    answer = min(answer, [i, j, x])
-                if k == 5:
-                    for t in range(5):
-                        visited[i][j + t] = True
-                    answer = temp
+                    # 뒤 체크
+                    # 뒷칸이 존재한다면 x가 아니어야 함
+                    if (j + 5 < 19 and arr[i][j + 5] != x) or j + 5 == 19:
+                        answer = min(answer, [j, i, x])
 
 
 def verticalSearch(x):
     global answer
     for i in range(19):
         for j in range(19):
-            for k in range(6):
-                temp = answer
-                if not (j + k < 19 and arr[j + k][i] == x and not visited[j + k][i]):
+            # 앞 체크
+            if i > 0 and arr[i - 1][j] == x:
+                continue
+            for k in range(5):
+                if i + k >= 19 or arr[i + k][j] != x:
                     break
                 if k == 4:
-                    answer = min(answer, [i, j, x])
-                if k == 5:
-                    for t in range(5):
-                        visited[j + t][i] = True
-                    answer = temp
+                    if (i + 5 < 19 and arr[i + 5][j] != x) or i + 5 == 19:
+                        answer = min(answer, [j, i, x])
 
 
 def main_diagonal(x):
     global answer
     for i in range(19):
         for j in range(19):
-            for k in range(6):
-                temp = answer
-                if not (j + k < 19 and i + k < 19 and arr[i + k][j + k] == x and not visited[i + k][j + k]):
+            # 앞 체크...하지만 앞이 없을 수도 있다
+            if i > 0 and j > 0 and arr[i - 1][j - 1] == x:
+                continue
+            for k in range(5):
+                if j + k >= 19 or i + k >= 19 or arr[i + k][j + k] != x:
                     break
                 if k == 4:
-                    answer = min(answer, [i, j, x])
-                if k == 5:
-                    for t in range(5):
-                        visited[i + t][j + t] = True
-
-                    answer = temp
+                    if (i + 5 < 19 and j + 5 < 19 and arr[i + k + 1][j + k + 1] != x) or i + 5 >= 19 or j + 5 >= 19:
+                        answer = min(answer, [j, i, x])
 
 
 def sub_diagonal(x):
     global answer
     for i in range(19):
         for j in range(19):
-            # if i > 0 and arr[i-1][j+1]
-            for k in range(6):
-                temp = answer
-                # i+k i-k
-                if not (i + k < 19 and j - k > 0 and arr[i + k][j - k] == x and not visited[i + k][j - k]):
+            # 앞 체크
+            if i > 0 and j + 1 < 19 and arr[i - 1][j + 1] == x:
+                continue
+            for k in range(5):
+                if i + k >= 19 or j - k < 0 or arr[i + k][j - k] != x:
                     break
                 if k == 4:
-                    answer = min(answer, [i + 4, j - 4, x])
-                if k == 5:
-                    for t in range(5):
-                        visited[i + t][j - t] = True
-                    answer = temp
+                    if (i + 5 < 19 and j - 5 >= 0 and arr[i + 5][j - 5] != x) or i + 5 >= 19 or j - 5 < 0:
+                        answer = min(answer, [j - 4, i + 4, x])
 
 
 horizontalSearch(1)
-visited = [[False for _ in range(19)] for _ in range(19)]
 horizontalSearch(2)
-visited = [[False for _ in range(19)] for _ in range(19)]
-
 verticalSearch(1)
-visited = [[False for _ in range(19)] for _ in range(19)]
-
 verticalSearch(2)
-visited = [[False for _ in range(19)] for _ in range(19)]
-
 main_diagonal(1)
-visited = [[False for _ in range(19)] for _ in range(19)]
-
 main_diagonal(2)
-visited = [[False for _ in range(19)] for _ in range(19)]
-
 sub_diagonal(1)
-visited = [[False for _ in range(19)] for _ in range(19)]
-
 sub_diagonal(2)
 
 if answer[0] == 100:
     print(0)
     exit()
 print(answer[2])
-print(answer[0] + 1, answer[1] + 1)
+print(answer[1] + 1, answer[0] + 1)
