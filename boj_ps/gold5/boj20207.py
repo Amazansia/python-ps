@@ -20,33 +20,51 @@ for i in range(N):
     # 시작날짜, 일정기간, 마지막날
     heapq.heappush(pq, [s, e - s + 1, e])
 
-idx = 0
 start = 0
 end = 0
 answer = 0
+
+
+def isContinuous(q, start):
+    for i in range(len(q)):
+        if start <= q[i][2] + 1:
+            return True
+    return False
+
+
+# 조건을 만족하는 가장 첫번째 일정
+def getIdx(q, start):
+    for i in range(len(q)):
+        if start > q[i][2]:
+            return i
+    return -1
+
 
 # q?
 while pq:
     now = heapq.heappop(pq)
 
     start = now[0]
-    end = now[1]
-    q_max_size = 0
-    q = []
+    end = now[2]
+    q_max_size = 1
+    q = [now]
     # 마지막 end일정 체크
     last_end = end
-    # 연속으로 이어지는 일정이 있는 경우
-    # next[0] == end + 1 or next[0] <= last_end
-    #
-    # end + 1 == next[0],
-    while pq and pq[0][0] == end + 1 or pq[0][0] <= last_end:
+
+    # 연속가능
+    while pq and isContinuous(q, pq[0][0]):
         next = heapq.heappop(pq)
         # 연속된 일정
-        if pq[0][0] == end + 1:
+        idx = getIdx(q, next[0])
+        if idx != -1:
+            q[idx][2] = next[2]
 
-        elif pq[0][0] <= last_end:
+        # q에 쌓이는 일정
+        else:
+            q.append(next)
 
-        last_end = next[1]
+        last_end = max(last_end, next[2])
+        q_max_size = max(q_max_size, len(q))
 
     answer += (last_end - start + 1) * q_max_size
 
