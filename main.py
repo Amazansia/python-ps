@@ -1,5 +1,2 @@
-l = []
-s = []
-print(l == s)
-str = "abcde"
-print(str[0:5])
+ss = "ABZ[]0abd"
+print(sorted(ss))
