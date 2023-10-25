@@ -38,9 +38,6 @@ def mixing(idx, total, visited):
         G = total_G // total
         B = total_B // total
         min_value = min(min_value, abs(R - goal[0]) + abs(G - goal[1]) + abs(B - goal[2]))
-        # print(R, G, B, total)
-        # print(*visited)
-        # print(min_value)
     if idx == N:
         return
         # 이번 idx의 물감을 섞지 않고 다음 재귀로 넘어감
