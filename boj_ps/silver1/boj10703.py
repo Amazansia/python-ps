@@ -20,18 +20,18 @@ for i in range(R):
 
 
 def getAirHeight(j):
-    height = 0
-    for i in range(R - 1, -1, -1):
+    ground = 0
+    meteor = 0
+    for i in range(R):
+        if pic[i][j] == 'X':
+            meteor = i + 1
         if pic[i][j] == '#':
-            continue
-        elif pic[i][j] == '.':
-            height += 1
-            if i == 0:
-                height = 3000
-        else:
+            ground = i
             break
-
-    return height
+    if meteor != 0 and ground != 0:
+        return ground - meteor
+    else:
+        return 3000
 
 
 def getMaxMove():
