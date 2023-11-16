@@ -4,5 +4,5 @@ input = sys.stdin.readline
 
 K = int(input())
 N = int(input())
-result = list(map(input())
+result = list(input())
 ladder = [list(input()) for _ in range(N)]
