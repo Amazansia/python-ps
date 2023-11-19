@@ -15,5 +15,36 @@ disjoint set?
 
 N = int(input())
 
+# 부모노드 저장
+parent = [i for i in range(1000000)]
+# 부모노드 기준으로 정답 저장
+answer = dict()
+
+
+def union(a, b):
+    parent_a = find(a)
+    parent_b = find(b)
+    if parent_a <= parent_b:
+        parent[b] = parent_a
+    else:
+        parent[a] = parent_b
+
+
+def find(a):
+    if parent[a] != a:
+        return find(parent[a])
+    return a
+
+
+def queryArr(a):
+    sum = 0
+    for i in range
+    return
+
+
 for _ in range(N):
     command = input().split(" ")
+    if command[0] == "I":
+        union(int(command[1]), int(command[2]))
+    else:
+        print(queryArr(int(command[1])))
