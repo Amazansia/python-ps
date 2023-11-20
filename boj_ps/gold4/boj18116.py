@@ -16,30 +16,29 @@ disjoint set?
 N = int(input())
 
 # 부모노드 저장
-parent = [i for i in range(1000000)]
+parent = [i for i in range(1000001)]
 # 부모노드 기준으로 정답 저장
-answer = dict()
+answer = [1 for i in range(1000001)]
 
 
 def union(a, b):
     parent_a = find(a)
     parent_b = find(b)
-    if parent_a <= parent_b:
-        parent[b] = parent_a
-    else:
-        parent[a] = parent_b
+    if parent_a < parent_b:
+        parent[parent_b] = parent_a
+        answer[parent_a] += answer[parent_b]
+        answer[parent_b] = 0
+    elif parent_a > parent_b:
+        parent[parent_a] = parent_b
+        answer[parent_b] += answer[parent_a]
+        answer[parent_a] = 0
 
 
 def find(a):
-    if parent[a] != a:
-        return find(parent[a])
-    return a
-
-
-def queryArr(a):
-    sum = 0
-    for i in range
-    return
+    if parent[a] == a:
+        return a
+    parent[a] = find(parent[a])
+    return parent[a]
 
 
 for _ in range(N):
@@ -47,4 +46,4 @@ for _ in range(N):
     if command[0] == "I":
         union(int(command[1]), int(command[2]))
     else:
-        print(queryArr(int(command[1])))
+        print(answer[find(int(command[1]))])
