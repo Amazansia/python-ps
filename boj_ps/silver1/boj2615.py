@@ -40,7 +40,7 @@ def horizontalSearch(x):
                 if k == 4:
                     # 뒤 체크
                     # 뒷칸이 존재한다면 x가 아니어야 함
-                    if (j + 5 < 19 and arr[i][j + 5] != x) or j + 5 == 19:
+                    if (j + 5 < 19 and arr[i][j + 5] != x) or (j + 5 == 19):
                         answer = min(answer, [j, i, x])
 
 
@@ -70,7 +70,7 @@ def main_diagonal(x):
                 if j + k >= 19 or i + k >= 19 or arr[i + k][j + k] != x:
                     break
                 if k == 4:
-                    if (i + 5 < 19 and j + 5 < 19 and arr[i + k + 1][j + k + 1] != x) or i + 5 >= 19 or j + 5 >= 19:
+                    if (i + 5 < 19 and j + 5 < 19 and arr[i + k + 1][j + k + 1] != x) or (i + 5 == 19 and j + 5 == 19):
                         answer = min(answer, [j, i, x])
 
 
